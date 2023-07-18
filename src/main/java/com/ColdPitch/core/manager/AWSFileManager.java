@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -25,7 +26,7 @@ public abstract class AWSFileManager implements FileManager {
     private String bucketName;
 
     @Override
-    public String upload(String path, MultipartFile multipartFile) throws IOException {
+    public String upload(String path, MultipartFile multipartFile) {
         existFile(multipartFile);
 
         ObjectMetadata objectMetadata = metaDataInstance(multipartFile);
@@ -40,22 +41,6 @@ public abstract class AWSFileManager implements FileManager {
         } catch (IOException e) {
             throw new CustomException(ErrorCode.FILE_NOT_FOUND);
         }
-    }
-
-
-    private static class getExtension {
-        public final String fileName;
-        public final String ext;
-
-        public getExtension(String fileName, String ext) {
-            this.fileName = fileName;
-            this.ext = ext;
-        }
-    }
-
-    @Override
-    public List<String> uploads(MultipartFile[] multipartFile) throws IOException {
-        return null;
     }
 
     @Override
@@ -80,7 +65,7 @@ public abstract class AWSFileManager implements FileManager {
     private static String makeFileUrl(String path, MultipartFile multipartFile) {
         String extension = getExtension(multipartFile);
         String fileName = UUID.randomUUID() + "." + extension;
-        return path + "/" + fileName;
+        return path + File.separator + fileName;
     }
 
     private static String getExtension(MultipartFile multipartFile) {

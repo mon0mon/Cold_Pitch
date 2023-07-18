@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class SolutionFileManager extends AWSFileManager {
-    private final String path = "solution" + File.separator + ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Seoul")).toLocalDate().toString();
+public class PostFileManager extends AWSFileManager {
+    private final String path = "post" + File.separator + ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Seoul")).toLocalDate().toString();
 
-    public SolutionFileManager(AmazonS3 s3Client) {
+    public PostFileManager(AmazonS3 s3Client) {
         super(s3Client);
     }
 
@@ -19,4 +19,10 @@ public class SolutionFileManager extends AWSFileManager {
     public String upload(String string, MultipartFile multipartFile) {
         return super.upload(path, multipartFile);
     }
+
+    @Override
+    public boolean delete(String fileName) {
+        return super.delete(fileName);
+    }
+
 }

@@ -5,28 +5,23 @@ import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class UserFileManager extends AWSFileManager {
 
+    private final String path = "profile" + File.separator + ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Seoul")).toLocalDate().toString();
+
     public UserFileManager(AmazonS3 s3Client) {
         super(s3Client);
     }
 
     @Override
-    public String upload(String string, MultipartFile multipartFile) throws IOException {
+    public String upload(String string, MultipartFile multipartFile) {
         validateFileExists(multipartFile);
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("/profile");
-        String timeNow = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Seoul")).toLocalDate().toString();
-        sb.append("/");
-        sb.append(timeNow);
-
-        return super.upload(sb.toString(), multipartFile);
+        return super.upload(path, multipartFile);
     }
 
     @Override
